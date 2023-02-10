@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "CURRENCY_RATE")
-public class Current implements Serializable{
+public class CurrencyRate implements Serializable{
 
 	private static final long serialVersionUID = -8187345297195839518L;
 	@Id
@@ -41,6 +43,7 @@ public class Current implements Serializable{
 
 	@Column(name = "creation_date")
 	@Schema(description = "建立時間")
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss",timezone = "GMT+8")
 	private Date creationDate;
 
 	@Column(name = "created_by")
@@ -49,6 +52,7 @@ public class Current implements Serializable{
 
 	@Column(name = "update_date")
 	@Schema(description = "更新時間")
+	@JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss",timezone = "GMT+8")
 	private Date updateDate;
 
 	@Column(name = "update_by")
