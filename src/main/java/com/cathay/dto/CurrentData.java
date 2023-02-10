@@ -1,5 +1,6 @@
 package com.cathay.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CurrentData {
-	private String code;
-	private String name;
+	@Schema(description = "幣別(英文)")
+	private String currencyCode;
+	@Schema(description = "幣別(中文)")
+	private String currencyName;
+	@Schema(description = "匯率")
 	private float rate;
 }

@@ -19,17 +19,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cathay.dto.CurrentPriceChangeRequest;
-import com.cathay.dto.CurrentPriceRequest;
-import com.cathay.entity.Current;
+import com.cathay.dto.CurrenyInserRequest;
+import com.cathay.dto.CurrenyRequest;
+import com.cathay.entity.CurrencyRate;
+import com.cathay.enu.Currency;
 import com.cathay.service.CurrentService;
 import com.cathay.utils.CurrentPrice;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
@@ -51,6 +48,7 @@ public class CurrentPriceController {
 	 */
 	@Operation(summary = "取得CoindeskAPI", description = "取得CoindeskAPI")
 	@GetMapping("/getCoindeskAPI")
+	@ResponseBody
 	public ResponseEntity<?> getApiData() {
 		CurrentPrice currentPrice = currentServiceImpl.callApi();
 		return ResponseEntity.status(HttpStatus.OK).body(currentPrice);
@@ -62,6 +60,7 @@ public class CurrentPriceController {
 	 */
 	@Operation(summary = "取得CoindeskAPI 經過轉換", description = "取得CoindeskAPI 經過轉換")
 	@GetMapping("/V1/getCoindeskAPI")
+	@ResponseBody
 	public ResponseEntity<?> getApiChangeData() {
 		CurrentPrice currentPrice = currentServiceImpl.callApi();
 		CurrentPriceChangeRequest  request=new CurrentPriceChangeRequest();
@@ -76,9 +75,9 @@ public class CurrentPriceController {
 	@Operation(summary = "新增幣別", description = "新增幣別")
 	@PostMapping("/create/currency")
 	@ResponseBody
-	public ResponseEntity<Current> craete(@RequestBody @Validated CurrentPriceRequest currentPriceRequest) {
-		Current data = currentPriceRequest.CurrentPriceRequestToCurrentData(currentPriceRequest);
-		Current  currentData= currentServiceImpl.insert(data);
+	public ResponseEntity<CurrencyRate> craete(@RequestBody @Validated CurrenyInserRequest currenyInserRequest) {
+		CurrencyRate data = currenyInserRequest.CurrenyInserRequestToCurrentData(currenyInserRequest,currenyInserRequest.getCurrency());
+		CurrencyRate  currentData= currentServiceImpl.insert(data);
 		return ResponseEntity.status(HttpStatus.CREATED).body(currentData);
 	}
 	/**
@@ -87,9 +86,10 @@ public class CurrentPriceController {
 	 */
 	@Operation(summary = "查詢幣別", description = "查詢幣別")
 	@RequestMapping(path = {"/currency/{currency}","/currency/"},method = RequestMethod.GET)
-	public ResponseEntity<List<Current>> read(@PathVariable(value = "currency",required = false) String currency) {
+	@ResponseBody
+	public ResponseEntity<List<CurrencyRate>> read(@PathVariable(value = "currency",required = false) String currency) {
 		log.info("取得 currency:{}", currency);
-		List<Current> currentPrice = currentServiceImpl.getByCurrency(currency);
+		List<CurrencyRate> currentPrice = currentServiceImpl.getByCurrency(currency);
 		return ResponseEntity.status(HttpStatus.OK).body(currentPrice);
 	}
 
@@ -100,12 +100,20 @@ public class CurrentPriceController {
 	@Operation(summary = "修改幣別", description = "修改幣別")
 	@PostMapping("/update/currency/{currency}")
 	@ResponseBody
-	public ResponseEntity<List<Current>> updateCurrentPrice(@PathVariable String currency,
-			@RequestBody @Validated CurrentPriceRequest currentPriceRequest) {
-		Current data = currentPriceRequest.CurrentPriceRequestToCurrentData(currentPriceRequest);
-		data.setCurrency(currency);
-		currentServiceImpl.updateByCurrency(data);
-		return ResponseEntity.status(HttpStatus.OK).build();
+	public ResponseEntity<Object> updateCurrentPrice(@PathVariable Currency currency,
+			@RequestBody @Validated CurrenyRequest currentPriceRequest) {
+
+		CurrencyRate data = currentPriceRequest.CurrenyRequestToCurrentData(currentPriceRequest,currency);
+		CurrencyRate responseData;
+		try {
+			responseData = currentServiceImpl.updateByCurrency(data);
+			return ResponseEntity.status(HttpStatus.OK).body(responseData);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("更新失敗:{}",e.getMessage());
+		}
+		return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("更新失敗");
+
 	}
 
 	/**
@@ -115,7 +123,7 @@ public class CurrentPriceController {
 	@Operation(summary = "刪除幣別", description = "刪除幣別")
 	@DeleteMapping("/del/currency/{currency}")
 	public ResponseEntity<?> delCurrentPrice(@PathVariable String currency) {
-		Current data=Current.builder().currency(currency).build();
+		CurrencyRate data=CurrencyRate.builder().currency(currency).build();
 		currentServiceImpl.deleteByCurrency(data);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		 
