@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,6 +31,7 @@ public class CurrentPriceControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	@Test
+	@DisplayName("呼叫api測試")
 	public void test_getApiData() throws Exception {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/getCoindeskAPI");
 
@@ -42,6 +44,7 @@ public class CurrentPriceControllerTest {
 	}
 
 	@Test
+	@DisplayName("呼叫api,並提供新版api測試")
 	public void test_getApiChangeData() throws Exception {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/V1/getCoindeskAPI");
 
@@ -56,6 +59,7 @@ public class CurrentPriceControllerTest {
 
 	@Transactional
 	@Test
+	@DisplayName("新增幣別測試")
 	public void test_craete() throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("currency", "HKD");
@@ -76,9 +80,9 @@ public class CurrentPriceControllerTest {
 				.andExpect(jsonPath("$.updateDate", notNullValue())).andExpect(status().is(201));
 
 	}
-
-	@Disabled
+	
 	@Test
+	@DisplayName("讀取幣別測試")
 	public void test_read() throws Exception {
 		created_data();
 
@@ -91,6 +95,7 @@ public class CurrentPriceControllerTest {
 	}
 
 	@Test
+	@DisplayName("更新幣別測試")
 	public void test_updateCurrentPrice() throws Exception {
 		created_data();
 		Map<String, Object>map =new HashMap<>();
@@ -112,7 +117,17 @@ public class CurrentPriceControllerTest {
                 .andDo(print());
 
     }
-
+	@Transactional
+	@Test
+	@DisplayName("刪除幣別測試")
+	public void test_del() throws Exception {
+		created_data();
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .delete("/del/currency/{currency}", "VND");
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().is(204));
+		
+	}
 	private void created_data() throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("currency", "VND");
