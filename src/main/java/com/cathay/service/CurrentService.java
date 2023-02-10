@@ -2,19 +2,19 @@ package com.cathay.service;
 
 import java.util.List;
 
-import com.cathay.entity.Current;
+import com.cathay.entity.CurrencyRate;
 import com.cathay.utils.CurrentPrice;
 
 public interface CurrentService {
 	
-	public Current insert(Current current);
+	public CurrencyRate insert(CurrencyRate current);
 
 	public CurrentPrice callApi();
 
-	public List<Current> getByCurrency(String toCurrency);
+	public List<CurrencyRate> getByCurrency(String toCurrency);
 
-	public void updateByCurrency(Current currency);
+	public CurrencyRate updateByCurrency(CurrencyRate currencyRate);
 
-	public void deleteByCurrency(Current currency);
+	public void deleteByCurrency(CurrencyRate currency);
 
 }
