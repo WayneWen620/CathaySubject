@@ -1,0 +1,252 @@
+{
+	"info": {
+		"_postman_id": "9949a3ef-e292-48b0-ac11-3f4ad6536346",
+		"name": "API測試",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3928151"
+	},
+	"item": [
+		{
+			"name": "api方法驗證",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "呼叫 coindesk 的 API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/getCoindeskAPI",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getCoindeskAPI"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "呼叫 coindesk 新 API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/getCoindeskAPI",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"getCoindeskAPI"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增訂單 _資料第1筆",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"currency\":\"HKD\",\r\n\"currencyName\":\"港幣\",\r\n\"updateBy\":\"Tets01\",\r\n\"rate\":123.21,\r\n\"memo\":\"港幣測試\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/create/currency",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"create",
+						"currency"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增訂單 _查詢多筆",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"toCurrency\":\"ZAR\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/currency/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"currency",
+						""
+					],
+					"query": [
+						{
+							"key": "toCurrency",
+							"value": "ZAR",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增訂單 _查詢單筆",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"toCurrency\":\"ZAR\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/currency/ZAR",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"currency",
+						"ZAR"
+					],
+					"query": [
+						{
+							"key": "toCurrency",
+							"value": "ZAR",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "修改訂單",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"toCurrency\":\"ZAR\",\r\n\"toCurrencyName\":\"南非幣\",\r\n\"updateBy\":\"Tets01\",\r\n\"rate\":123.21,\r\n\"description\":\"台幣測試\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/update/currency/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"update",
+						"currency",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除訂單",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"toCurrency\":\"ZAR\",\r\n\"toCurrencyName\":\"南非幣\",\r\n\"updateBy\":\"Tets01\",\r\n\"rate\":123.21,\r\n\"description\":\"台幣測試\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/del/currency/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"del",
+						"currency",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增訂單 _資料第2筆",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"currency\":\"TWD\",\r\n\"currencyName\":\"台幣\",\r\n\"updateBy\":\"Tets01\",\r\n\"rate\":123.21,\r\n\"memo\":\"台幣測試\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/create/currency",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"create",
+						"currency"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
